@@ -89,6 +89,54 @@ async function initProject(config: ProjectConfig): Promise<{ success: boolean; e
             'npm install framer-motion@latest next-seo@latest lucide-react@latest clsx@latest tailwind-merge@latest'
         );
 
+        // Create .gitignore
+        console.log('📝 Creating .gitignore...');
+        const gitignoreContent = `# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Next.js
+.next/
+out/
+
+# Production builds
+build/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+*.tmp
+`;
+        writeFileSync(join(projectDir, 'my-app', '.gitignore'), gitignoreContent);
+
+        // Initialize git repo
+        console.log('🔧 Initializing git repository...');
+        await execAsync('git init', { cwd: join(projectDir, 'my-app') });
+        await execAsync('git add .', { cwd: join(projectDir, 'my-app') });
+        await execAsync('git commit -m "Initial commit"', { cwd: join(projectDir, 'my-app') });
+
         return { success: true };
 
     } catch (error: any) {
