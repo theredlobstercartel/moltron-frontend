@@ -4,9 +4,15 @@ import { promisify } from 'node:util';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 const execAsync = promisify(exec);
-// Ensure project directory
+// Default projects directory
+const DEFAULT_PROJECTS_DIR = '/home/ubuntu/.openclaw/workspace/projects';
+// Ensure project directory in the correct location
 function ensureProjectDir(projectName) {
-    const dir = join(process.cwd(), projectName);
+    // Ensure the base projects directory exists
+    if (!existsSync(DEFAULT_PROJECTS_DIR)) {
+        mkdirSync(DEFAULT_PROJECTS_DIR, { recursive: true });
+    }
+    const dir = join(DEFAULT_PROJECTS_DIR, projectName);
     if (!existsSync(dir)) {
         mkdirSync(dir, { recursive: true });
     }

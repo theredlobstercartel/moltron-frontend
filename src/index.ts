@@ -18,9 +18,17 @@ interface ProjectConfig {
     theme: 'dark' | 'light';
 }
 
-// Ensure project directory
+// Default projects directory
+const DEFAULT_PROJECTS_DIR = '/home/ubuntu/.openclaw/workspace/projects';
+
+// Ensure project directory in the correct location
 function ensureProjectDir(projectName: string): string {
-    const dir = join(process.cwd(), projectName);
+    // Ensure the base projects directory exists
+    if (!existsSync(DEFAULT_PROJECTS_DIR)) {
+        mkdirSync(DEFAULT_PROJECTS_DIR, { recursive: true });
+    }
+    
+    const dir = join(DEFAULT_PROJECTS_DIR, projectName);
     if (!existsSync(dir)) {
         mkdirSync(dir, { recursive: true });
     }
