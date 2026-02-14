@@ -69,15 +69,23 @@ Cada aesthetic tem seu próprio sistema de cores HSL:
 - Transições suaves em hover
 - Micro-interactions em botões
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack (Latest Versions)
 
-- **Framework**: Next.js 14+ (App Router)
-- **Components**: shadcn/ui
-- **Styling**: Tailwind CSS
-- **Fonts**: Google Fonts + Next Font
-- **Animations**: Framer Motion
-- **SEO**: next-seo
-- **Icons**: Lucide React
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Next.js | 15+ | React framework (App Router) |
+| React | 19+ | UI library |
+| TypeScript | 5.5+ | Type safety |
+| shadcn/ui | Latest | Component library |
+| Tailwind CSS | 3.4+ | Styling |
+| Framer Motion | 11+ | Animations |
+| next-seo | Latest | SEO optimization |
+| Lucide React | Latest | Icons |
+
+## Requirements
+
+- **Node.js**: 18.17+ (required for Next.js 15+)
+- **npm**: 9+ or **pnpm**: 8+
 
 ## 📦 Componentes shadcn Incluídos
 

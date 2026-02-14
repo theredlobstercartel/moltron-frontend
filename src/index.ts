@@ -42,21 +42,30 @@ async function initProject(config: ProjectConfig): Promise<{ success: boolean; e
     const projectDir = ensureProjectDir(config.name);
     
     try {
-        // Check Node version
+        // Check Node version - Next.js 15+ requires Node 18.17+
         const { stdout: nodeVersion } = await execAsync('node --version');
         const majorVersion = parseInt(nodeVersion.replace('v', '').split('.')[0]);
+        const minorVersion = parseInt(nodeVersion.replace('v', '').split('.')[1]);
         
-        if (majorVersion < 18) {
-            return { success: false, error: 'Node.js 18+ required' };
+        if (majorVersion < 18 || (majorVersion === 18 && minorVersion < 17)) {
+            return { success: false, error: 'Node.js 18.17+ required for Next.js 15+' };
         }
 
-        // Initialize Next.js with shadcn
-        console.log('🚀 Initializing Next.js + shadcn project...');
+        // Initialize Next.js 15+ with shadcn
+        console.log('🚀 Initializing Next.js 15+ with shadcn...');
         
-        const template = config.theme === 'dark' ? 'next-base-color-neutral' : 'next-base-color-stone';
-        
+        // Create Next.js project with latest version
+        console.log('📦 Creating Next.js project...');
         await execAsync(
-            `echo "my-app" | npx shadcn@latest init --yes --template ${template} --base-color ${config.theme === 'dark' ? 'neutral' : 'stone'}`
+            `npx create-next-app@latest my-app --typescript --tailwind --eslint --app --src-dir=false --import-alias="@/*" --use-npm --no-turbopack`,
+            { cwd: projectDir }
+        );
+
+        // Navigate to project and initialize shadcn
+        console.log('🎨 Initializing shadcn/ui...');
+        await execAsync(
+            `echo "my-app" | npx shadcn@latest init --yes --base-color ${config.theme === 'dark' ? 'neutral' : 'stone'}`,
+            { cwd: projectDir }
         );
 
         // Install additional shadcn components
@@ -66,10 +75,10 @@ async function initProject(config: ProjectConfig): Promise<{ success: boolean; e
             await execAsync(`npx shadcn@latest add ${component} -y`);
         }
 
-        // Install additional dependencies
-        console.log('📦 Installing dependencies...');
+        // Install additional dependencies with specific latest versions
+        console.log('📦 Installing latest dependencies...');
         await execAsync(
-            'npm install framer-motion next-seo @next/font lucide-react clsx tailwind-merge'
+            'npm install framer-motion@latest next-seo@latest lucide-react@latest clsx@latest tailwind-merge@latest'
         );
 
         return { success: true };
